@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -167,8 +166,8 @@ namespace TheLostHero
             if (isStartGame)
             {
                 map.PresentationMap(grPaint);
-                player.PlayAnimation(grPaint, isPressedAnyKey);
                 bot.PlayAnimation(grPaint);
+                player.PlayAnimation(grPaint, isPressedAnyKey);
             }
             else grPaint.DrawImage(menu, new PointF(0, 0));
         }

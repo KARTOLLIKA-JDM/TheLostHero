@@ -5,7 +5,7 @@ namespace TheLostHero
     internal class Player
     {
         public readonly Image playerImage;
-        public Point location;
+        public static Point location;
         public readonly Size sizeHero;
         public int currAnimation = 4;
         public int currFrame = 0;
@@ -23,7 +23,8 @@ namespace TheLostHero
 
         public void Left(int widthWindow, int sizeOfMapObject, int widthMap)
         {
-            location.X -= speedPlayer;
+            if (location.X + sizeHero.Width / 8 > 0)
+                location.X -= speedPlayer;
             if (location.X > widthWindow / 2 && location.X < sizeOfMapObject * widthMap - widthWindow / 2)
             {
                 delta.X += speedPlayer;
@@ -34,7 +35,8 @@ namespace TheLostHero
 
         public void Right(int widthWindow, int sizeOfMapObject, int widthMap)
         {
-            location.X += speedPlayer;
+            if (location.X < sizeOfMapObject * widthMap - sizeHero.Width / 2)
+                location.X += speedPlayer;
             if (location.X > widthWindow / 2 && location.X < sizeOfMapObject * widthMap - widthWindow / 2)
             {
                 delta.X -= speedPlayer;
@@ -45,7 +47,8 @@ namespace TheLostHero
 
         public void Down(int heightWindow, int sizeOfMapObject, int heightMap)
         {
-            location.Y += speedPlayer;
+            if (location.Y < sizeOfMapObject * heightMap - sizeHero.Height / 2)
+                location.Y += speedPlayer;
             if (location.Y > heightWindow / 2 && location.Y < sizeOfMapObject * heightMap - heightWindow / 2)
             {
                 delta.Y -= speedPlayer;
@@ -56,7 +59,8 @@ namespace TheLostHero
 
         public void Up(int heightWindow, int sizeOfMapObject, int heightMap)
         {
-            location.Y -= speedPlayer;
+            if (location.Y > 0)
+                location.Y -= speedPlayer;
             if (location.Y > heightWindow / 2 && location.Y < sizeOfMapObject * heightMap - heightWindow / 2)
             {
                 delta.Y += speedPlayer;

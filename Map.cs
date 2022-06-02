@@ -5,8 +5,8 @@ namespace TheLostHero
 {
     internal class Map
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public static int Width { get; private set; }
+        public static int Height { get; private set; }
         public string[] CurrMap { get; private set; }
 
         public static Point delta;
@@ -98,7 +98,7 @@ namespace TheLostHero
             isChangeMap = false;
         }
 
-        public void CreateMap()
+        private void CreateMap()
         {
             var grFromImage = Graphics.FromImage(bitMAp);
             for (int i = 0; i < CurrMap.Length; i++)

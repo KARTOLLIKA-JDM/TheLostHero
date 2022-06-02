@@ -7,13 +7,17 @@ namespace TheLostHero
     // сделать массив, где будут храниться положения ботов на каждом уровне
     internal class Bot
     {
+        private const int sizeOfMapObject = 32;
+        private int rightPath;
+        private int countSteps;
         private Image botImage;
         private int speedBot;
         private int currAnimation = 4;
         private int currFrame = 0;
         private Point location;
+        private bool isPlayerNear;
         private bool isBotMove;
-        private bool isEndMove;
+        private bool isStopBotEnd;
         private readonly Random randomChoosePath;
         private readonly Size botSize;
         private readonly string[] dirImagesBot;
@@ -29,8 +33,20 @@ namespace TheLostHero
             randomChoosePath = new Random();
             botSize = new Size(256, 256);
             isBotMove = true;
-            isEndMove = true;
+            isPlayerNear = false;
+            isStopBotEnd = false;
             delta = new Point(0, 0);
+            countSteps = 0;
+            rightPath = 0;
+        }
+
+        private void DefinitionLocationPlayer()
+        {
+            double distance = Math.Sqrt(((Player.location.X - location.X)* (Player.location.X - location.X) +
+                                        (Player.location.Y - location.Y)* (Player.location.Y - location.Y)));
+            if (distance < 200)
+                isPlayerNear = true;
+            else isPlayerNear = false;
         }
 
         private void ChooseSpeedBot(bool isAngryBot)
@@ -41,96 +57,98 @@ namespace TheLostHero
 
         public void Move()
         {
-            if (isEndMove)
-                ChoosePath();
+            DefinitionLocationPlayer();
+            if (isPlayerNear)
+                currAnimation = 4;
+            else ChoosePath();
         }
 
         private void Left()
         {
+            countSteps++;
             currAnimation = 2;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if (currFrame == 3) currFrame = 0;
-                currFrame++;
-                location.X -= speedBot;
+                if (location.X + botSize.Width / 8 > 0)
+                {
+                    if (currFrame == 3) currFrame = 0;
+                    currFrame++;
+                    location.X -= speedBot;
+                }
             }
-            isEndMove = true;
-            StopBot();
         }
 
         private void Right()
         {
             currAnimation = 3;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if (currFrame == 3) currFrame = 0;
-                currFrame++;
-                location.X += speedBot;
+                if(location.X < sizeOfMapObject * Map.Width - botSize.Width / 2)
+                {
+                    if (currFrame == 3) currFrame = 0;
+                    currFrame++;
+                    location.X += speedBot;
+                }
             }
-            isEndMove = true;
-            StopBot();
+            countSteps++;
         }
 
         private void Down()
         {
             currAnimation = 0;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if (currFrame == 3) currFrame = 0;
-                currFrame++;
-                location.Y += speedBot;
+                if (location.Y < sizeOfMapObject * Map.Height - botSize.Height / 2)
+                {
+                    if (currFrame == 3) currFrame = 0;
+                    currFrame++;
+                    location.Y += speedBot;
+                }
             }
-            isEndMove = true;
-            StopBot();
+            countSteps++;
         }
 
         private void Up()
         {
             currAnimation = 1;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if (currFrame == 3) currFrame = 0;
-                currFrame++;
-                location.Y -= speedBot;
+                if (location.Y > 0)
+                {
+                    if (currFrame == 3) currFrame = 0;
+                    currFrame++;
+                    location.Y -= speedBot;
+                }
             }
-            isEndMove = true;
-            StopBot();
+            countSteps++;
         }
 
         private void StopBot()
         {
-            //isBotMove = false;
-        }
-
-        public void PlayAnimation(Graphics gr)
-        {
-            if (isBotMove)
-            {
-                if (currAnimation <= 3 && currAnimation != -1)
-                {
-                    gr.DrawImage(botImage, location.X + delta.X, location.Y + delta.Y,
-                        new Rectangle(new Point(256 * currFrame, 256 * currAnimation), botSize),
-                        GraphicsUnit.Pixel);
-                }
-            }
-            else
-            {
-                currFrame = 0;
-                if (currAnimation > 3)
-                {
-                    gr.DrawImage(botImage, location.X + delta.X, location.Y + delta.Y,
-                        new Rectangle(new Point(256 * currFrame, 256 * (currAnimation - 4)), botSize),
-                        GraphicsUnit.Pixel);
-                }
-            }
+            if (countSteps + 1 == 20) isStopBotEnd = true;
+            countSteps++;
+            currAnimation = 4;
         }
 
         private void ChoosePath()
         {
             isBotMove = true;
-            isEndMove = true;
-            int path = randomChoosePath.Next(0, 4);
-            switch (path)
+            if(countSteps == 10 || countSteps == 20)
+            {
+                rightPath = randomChoosePath.Next(0, 4);
+                if (isStopBotEnd)
+                {
+                    countSteps = 0;
+                    isStopBotEnd = false;
+                }
+                else
+                {
+                    StopBot();
+                    rightPath = 4;
+                }
+            }
+
+            switch (rightPath)
             {
                 case 0:
                     Left();
@@ -167,33 +185,27 @@ namespace TheLostHero
             }
         }
 
-        //private void Move(char direction)
-        //{
-        //    switch(direction)
-        //    {
-        //        case 'L':
-        //            currAnimation = 2;
-        //            break;
-        //        case 'R':
-        //            currAnimation = 3;
-        //            break;
-        //        case 'U':
-        //            currAnimation = 1;
-        //            break;
-        //        case 'D':
-        //            currAnimation = 0;
-        //            break;
-        //    }
-
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        if (currFrame == 3) currFrame = 0;
-        //        currFrame++;
-
-        //        location.X -= speedBot;
-        //    }
-
-        //    ChoosePath();
-        //}
+        public void PlayAnimation(Graphics gr)
+        {
+            if (isBotMove)
+            {
+                if (currAnimation <= 3 && currAnimation != -1)
+                {
+                    gr.DrawImage(botImage, location.X + delta.X, location.Y + delta.Y,
+                        new Rectangle(new Point(256 * currFrame, 256 * currAnimation), botSize),
+                        GraphicsUnit.Pixel);
+                }
+            }
+            else
+            {
+                currFrame = 0;
+                if (currAnimation > 3)
+                {
+                    gr.DrawImage(botImage, location.X + delta.X, location.Y + delta.Y,
+                        new Rectangle(new Point(0, 256 * (currAnimation - 4)), botSize),
+                        GraphicsUnit.Pixel);
+                }
+            }
+        }
     }
 }
