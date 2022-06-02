@@ -15,13 +15,15 @@ namespace TheLostHero
         private readonly Bitmap menu;
         private Button startButton;
         private Button exitButton;
+        private Coins coin;
 
         public Form1()
         {
             InitializeComponent();
-            player = new Player(new Size(256, 256), 100, 100);
+            player = new Player(100, 100);
             map = new Map();
             bot = new Bot(false, 0);
+            coin = new Coins();
             menu = new Bitmap(@"D:\Игра по C#\Графика\menu.png");
 
             timerForPlayAnimation.Interval = 70;
@@ -117,16 +119,16 @@ namespace TheLostHero
             switch (player.currAnimation)
             {
                 case 0:
-                    player.Down(Height, sizeOfMapObject, map.Height);
+                    player.Down(Height, sizeOfMapObject, Map.Height);
                     break;
                 case 1:
-                    player.Up(Height, sizeOfMapObject, map.Height);
+                    player.Up(Height, sizeOfMapObject, Map.Height);
                     break;
                 case 2:
-                    player.Left(Width, sizeOfMapObject, map.Width);
+                    player.Left(Width, sizeOfMapObject, Map.Width);
                     break;
                 case 3:
-                    player.Right(Width, sizeOfMapObject, map.Width);
+                    player.Right(Width, sizeOfMapObject, Map.Width);
                     break;
             }
             Invalidate(); // Переотрисовка
@@ -166,8 +168,10 @@ namespace TheLostHero
             if (isStartGame)
             {
                 map.PresentationMap(grPaint);
+                coin.PresentationImageCoin(grPaint);
                 bot.PlayAnimation(grPaint);
                 player.PlayAnimation(grPaint, isPressedAnyKey);
+                player.PresentationCountCoins(grPaint);
             }
             else grPaint.DrawImage(menu, new PointF(0, 0));
         }

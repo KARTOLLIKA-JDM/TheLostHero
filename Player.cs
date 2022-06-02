@@ -4,21 +4,31 @@ namespace TheLostHero
 {
     internal class Player
     {
+        private readonly Font font;
+        private readonly SolidBrush brush;
         public readonly Image playerImage;
         public static Point location;
-        public readonly Size sizeHero;
+        public static readonly Size sizeHero = new Size(256, 256);
         public int currAnimation = 4;
         public int currFrame = 0;
         public const int speedPlayer = 3;
         private static Point delta;
+        public static int CountCoins;
 
-        public Player(Size _sizeHero, int _x, int _y)
+        public Player(int _x, int _y)
         {
+            font = new Font("Arial", 16);
+            brush = new SolidBrush(Color.Black);
+            CountCoins = 0;
             playerImage = new Bitmap(@"D:\Игра по C#\Графика\Heroe (2).png");
-            sizeHero = _sizeHero;
             location.X = _x;
             location.Y = _y;
             delta = new Point(0, 0);
+        }
+
+        public void PresentationCountCoins(Graphics gr)
+        {
+            gr.DrawString(CountCoins.ToString(), font, brush, new Point(10, 10));
         }
 
         public void Left(int widthWindow, int sizeOfMapObject, int widthMap)
