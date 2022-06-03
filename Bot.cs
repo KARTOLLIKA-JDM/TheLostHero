@@ -78,7 +78,7 @@ namespace TheLostHero
             }
         }
 
-        public void MoveOneBot()
+        private void MoveOneBot()
         {
             DefinitionLocationPlayer();
             if (isPlayerNear)
@@ -210,13 +210,13 @@ namespace TheLostHero
 
         public void PlayAnimation(Graphics gr)
         {
-            for(int i = 0;i<3;i++)
+            for (int i = 0; i < 3; i++)
             {
-                bots[i].PlayAnimation1(gr);
+                bots[i].PlayAnimationOneBot(gr);
             }
         }
 
-        private void PlayAnimation1(Graphics gr)
+        private void PlayAnimationOneBot(Graphics gr)
         {
             if (isBotMove)
             {

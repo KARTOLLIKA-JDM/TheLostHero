@@ -11,7 +11,7 @@ namespace TheLostHero
         private readonly int sizeOfMapObject = 32;
         private readonly Player player;
         private readonly Map map;
-        private readonly Bot bot;
+        private readonly Bot bots;
         private readonly Bitmap menu;
         private Button startButton;
         private Button exitButton;
@@ -22,7 +22,7 @@ namespace TheLostHero
             InitializeComponent();
             player = new Player(100, 100);
             map = new Map();
-            bot = new Bot();
+            bots = new Bot();
             coins = new Coins(10);
             menu = new Bitmap(@"D:\Игра по C#\Графика\menu.png");
 
@@ -36,7 +36,7 @@ namespace TheLostHero
 
             CreateButton();
             coins.InitializationCoins();
-            bot.InitializationBots();
+            bots.InitializationBots();
 
             KeyDown += new KeyEventHandler(KeyBoard);
             KeyUp += new KeyEventHandler(FreeKey);
@@ -92,7 +92,7 @@ namespace TheLostHero
             {
                 if (player.currFrame == 3) player.currFrame = 0;
                 player.currFrame++;
-                bot.Move();
+                bots.Move();
                 Invalidate(); // Переотрисовка
             }
         }
@@ -171,7 +171,7 @@ namespace TheLostHero
             {
                 map.PresentationMap(grPaint);
                 coins.PresentationImageCoin(grPaint);
-                bot.PlayAnimation(grPaint);
+                bots.PlayAnimation(grPaint);
                 player.PlayAnimation(grPaint, isPressedAnyKey);
                 player.PresentationCountCoins(grPaint);
             }
