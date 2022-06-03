@@ -6,23 +6,26 @@ namespace TheLostHero
 {
     internal class Coins
     {
+        private readonly List<Point> locationsCoins;
         private readonly Point location;
         private readonly Image imageCoin;
         private bool isCollectCoin;
         private readonly Size sizeCoin;
         private readonly List<Coins> coins = new List<Coins>();
         private readonly int countCoins;
-        private readonly Random rndY4;
-        private readonly Random rndX4;
 
         public Coins(int _countCoins)
         {
+            locationsCoins = new List<Point> { new Point(500, 500),
+                new Point(500, 2000), new Point(500, 200),
+                new Point(200, 1500), new Point(1000, 100),
+                new Point(520, 800), new Point(1800,800),
+                new Point(1800,1500), new Point(1000,1000),
+                new Point(1050,1060),};
             countCoins = _countCoins;
             imageCoin = new Bitmap(@"D:\Игра по C#\Графика\Безымянный.png");
             isCollectCoin = false;
             sizeCoin = new Size(32, 32);
-            rndX4 = new Random();
-            rndY4 = new Random();
         }
 
         public Coins(Point _location)
@@ -37,9 +40,7 @@ namespace TheLostHero
         {
             for (int i = 0; i < countCoins; i++)
             {
-                var x4 = rndX4.Next(100, 1000);
-                var y4 = rndY4.Next(100, 1000);
-                coins.Add(new Coins(new Point(x4, y4)));
+                coins.Add(new Coins(locationsCoins[i]));
             }
         }
 

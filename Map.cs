@@ -23,7 +23,7 @@ namespace TheLostHero
         {
             spritesMap = new Bitmap(@"D:\Игра по C#\Графика\32x32_map_tile.png");
             maps = Directory.GetFiles(@"D:\Игра по C#\Maps", @"*.txt");
-            CurrMap = File.ReadAllLines(@"D:\Игра по C#\Maps\level1.txt");
+            CurrMap = File.ReadAllLines(@"D:\Игра по C#\Maps\level3.txt");
             Height = CurrMap.Length;
             Width = CurrMap[0].Length;
             currMapIndex = 0;
@@ -72,8 +72,8 @@ namespace TheLostHero
                     currColumn = 2;
                     break;
                 case 'K': // куст
-                    currRow = 12;
-                    currColumn = 3;
+                    currRow = 6;
+                    currColumn = 2;
                     break;
                 case 'L': // лестница
                     currRow = 8;

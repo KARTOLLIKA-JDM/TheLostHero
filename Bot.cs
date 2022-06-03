@@ -28,7 +28,7 @@ namespace TheLostHero
         public Bot()
         {
             bots = new List<Bot>();
-            positionsBots = new List<Point> { new Point(500, 500), new Point(1000, 200), new Point(200, 1000) };
+            positionsBots = new List<Point> { new Point(500, 500), new Point(2000, 500), new Point(200, 2000) };
             delta = new Point(0, 0);
         }
 
@@ -156,7 +156,7 @@ namespace TheLostHero
         private void ChoosePath()
         {
             isBotMove = true;
-            if (countSteps == 10 || countSteps == 20)
+            if (countSteps == 5 || countSteps == 20)
             {
                 rightPath = randomChoosePath.Next(0, 4);
                 if (isStopBotEnd)
