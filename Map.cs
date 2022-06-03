@@ -28,7 +28,7 @@ namespace TheLostHero
             Width = CurrMap[0].Length;
             currMapIndex = 0;
             isSaveMap = false;
-            bitMAp = new Bitmap(3200,3200);
+            bitMAp = new Bitmap(3200, 3200);
         }
 
         private void ChangeSizeMap()

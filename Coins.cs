@@ -10,7 +10,7 @@ namespace TheLostHero
         private readonly Image imageCoin;
         private bool isCollectCoin;
         private readonly Size sizeCoin;
-        private readonly List<Coins> obj = new List<Coins>();
+        private readonly List<Coins> coins = new List<Coins>();
         private readonly int countCoins;
         private readonly Random rndY4;
         private readonly Random rndX4;
@@ -22,7 +22,7 @@ namespace TheLostHero
             isCollectCoin = false;
             sizeCoin = new Size(32, 32);
             rndX4 = new Random();
-            rndY4= new Random();
+            rndY4 = new Random();
         }
 
         public Coins(Point _location)
@@ -39,18 +39,18 @@ namespace TheLostHero
             {
                 var x4 = rndX4.Next(100, 1000);
                 var y4 = rndY4.Next(100, 1000);
-                obj.Add(new Coins(new Point(x4, y4)));
+                coins.Add(new Coins(new Point(x4, y4)));
             }
         }
 
         public void PresentationImageCoin(Graphics gr)
         {
-            for (int i = 0; i < obj.Count; i++)
+            for (int i = 0; i < coins.Count; i++)
             {
-                if (!obj[i].isCollectCoin)
+                if (!coins[i].isCollectCoin)
                 {
-                    obj[i].Collision();
-                    gr.DrawImage(obj[i].imageCoin, obj[i].location.X + Map.delta.X, obj[i].location.Y + Map.delta.Y);
+                    coins[i].Collision();
+                    gr.DrawImage(coins[i].imageCoin, coins[i].location.X + Map.delta.X, coins[i].location.Y + Map.delta.Y);
                 }
             }
         }

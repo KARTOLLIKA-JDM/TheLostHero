@@ -22,7 +22,7 @@ namespace TheLostHero
             InitializeComponent();
             player = new Player(100, 100);
             map = new Map();
-            bot = new Bot(false, 0);
+            bot = new Bot();
             coins = new Coins(10);
             menu = new Bitmap(@"D:\Игра по C#\Графика\menu.png");
 
@@ -36,6 +36,7 @@ namespace TheLostHero
 
             CreateButton();
             coins.InitializationCoins();
+            bot.InitializationBots();
 
             KeyDown += new KeyEventHandler(KeyBoard);
             KeyUp += new KeyEventHandler(FreeKey);

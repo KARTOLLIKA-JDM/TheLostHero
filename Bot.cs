@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
 namespace TheLostHero
 {
-    // сделать массив, где будут храниться положения ботов на каждом уровне
     internal class Bot
     {
+        private readonly List<Point> positionsBots;
+        private readonly List<Bot> bots;
         private const int sizeOfMapObject = 32;
         private int rightPath;
         private int countSteps;
@@ -20,30 +22,43 @@ namespace TheLostHero
         private bool isStopBotEnd;
         private readonly Random randomChoosePath;
         private readonly Size botSize;
-        private readonly string[] dirImagesBot;
+        private static readonly string[] dirImagesBot = Directory.GetFiles(@"D:\Игра по C#\botsImages", @"*.png");
         public static Point delta;
 
-        public Bot(bool _isAngryBot, int _numberBot)
+        public Bot()
         {
-            dirImagesBot = Directory.GetFiles(@"D:\Игра по C#\botsImages", @"*.png");
-            ChooseSpeedBot(_isAngryBot);
-            ChooseImageBot(_numberBot);
-            location.X = 500;
-            location.Y = 500;
+            bots = new List<Bot>();
+            positionsBots = new List<Point> { new Point(500, 500), new Point(1000, 200), new Point(200, 1000) };
+            delta = new Point(0, 0);
+        }
+
+        private Bot(Point _location)
+        {
+            location.X = _location.X;
+            location.Y = _location.Y;
+            ChooseSpeedBot(false);
+            ChooseImageBot(0);
             randomChoosePath = new Random();
             botSize = new Size(256, 256);
             isBotMove = true;
             isPlayerNear = false;
             isStopBotEnd = false;
-            delta = new Point(0, 0);
             countSteps = 0;
             rightPath = 0;
         }
 
+        public void InitializationBots()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                bots.Add(new Bot(positionsBots[i]));
+            }
+        }
+
         private void DefinitionLocationPlayer()
         {
-            double distance = Math.Sqrt(((Player.location.X - location.X)* (Player.location.X - location.X) +
-                                        (Player.location.Y - location.Y)* (Player.location.Y - location.Y)));
+            double distance = Math.Sqrt(((Player.location.X - location.X) * (Player.location.X - location.X) +
+                                        (Player.location.Y - location.Y) * (Player.location.Y - location.Y)));
             if (distance < 200)
                 isPlayerNear = true;
             else isPlayerNear = false;
@@ -56,6 +71,14 @@ namespace TheLostHero
         }
 
         public void Move()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                bots[i].MoveOneBot();
+            }
+        }
+
+        public void MoveOneBot()
         {
             DefinitionLocationPlayer();
             if (isPlayerNear)
@@ -83,7 +106,7 @@ namespace TheLostHero
             currAnimation = 3;
             for (int i = 0; i < 5; i++)
             {
-                if(location.X < sizeOfMapObject * Map.Width - botSize.Width / 2)
+                if (location.X < sizeOfMapObject * Map.Width - botSize.Width / 2)
                 {
                     if (currFrame == 3) currFrame = 0;
                     currFrame++;
@@ -133,7 +156,7 @@ namespace TheLostHero
         private void ChoosePath()
         {
             isBotMove = true;
-            if(countSteps == 10 || countSteps == 20)
+            if (countSteps == 10 || countSteps == 20)
             {
                 rightPath = randomChoosePath.Next(0, 4);
                 if (isStopBotEnd)
@@ -186,6 +209,14 @@ namespace TheLostHero
         }
 
         public void PlayAnimation(Graphics gr)
+        {
+            for(int i = 0;i<3;i++)
+            {
+                bots[i].PlayAnimation1(gr);
+            }
+        }
+
+        private void PlayAnimation1(Graphics gr)
         {
             if (isBotMove)
             {
