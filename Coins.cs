@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace TheLostHero
 {
@@ -8,21 +10,48 @@ namespace TheLostHero
         private readonly Image imageCoin;
         private bool isCollectCoin;
         private readonly Size sizeCoin;
+        private readonly List<Coins> obj = new List<Coins>();
+        private readonly int countCoins;
+        private readonly Random rndY4;
+        private readonly Random rndX4;
 
-        public Coins()
+        public Coins(int _countCoins)
         {
-            location = new Point(500, 200);
+            countCoins = _countCoins;
+            imageCoin = new Bitmap(@"D:\Игра по C#\Графика\Безымянный.png");
+            isCollectCoin = false;
+            sizeCoin = new Size(32, 32);
+            rndX4 = new Random();
+            rndY4= new Random();
+        }
+
+        public Coins(Point _location)
+        {
+            location = _location;
             imageCoin = new Bitmap(@"D:\Игра по C#\Графика\Безымянный.png");
             isCollectCoin = false;
             sizeCoin = new Size(32, 32);
         }
 
+        public void InitializationCoins()
+        {
+            for (int i = 0; i < countCoins; i++)
+            {
+                var x4 = rndX4.Next(100, 1000);
+                var y4 = rndY4.Next(100, 1000);
+                obj.Add(new Coins(new Point(x4, y4)));
+            }
+        }
+
         public void PresentationImageCoin(Graphics gr)
         {
-            if (!isCollectCoin)
+            for (int i = 0; i < obj.Count; i++)
             {
-                Collision();
-                gr.DrawImage(imageCoin, location);
+                if (!obj[i].isCollectCoin)
+                {
+                    obj[i].Collision();
+                    gr.DrawImage(obj[i].imageCoin, obj[i].location.X + Map.delta.X, obj[i].location.Y + Map.delta.Y);
+                }
             }
         }
 

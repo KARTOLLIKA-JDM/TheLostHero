@@ -15,7 +15,7 @@ namespace TheLostHero
         private readonly Bitmap menu;
         private Button startButton;
         private Button exitButton;
-        private Coins coin;
+        private readonly Coins coins;
 
         public Form1()
         {
@@ -23,7 +23,7 @@ namespace TheLostHero
             player = new Player(100, 100);
             map = new Map();
             bot = new Bot(false, 0);
-            coin = new Coins();
+            coins = new Coins(10);
             menu = new Bitmap(@"D:\Игра по C#\Графика\menu.png");
 
             timerForPlayAnimation.Interval = 70;
@@ -35,6 +35,7 @@ namespace TheLostHero
             timerForUpdateMove.Start();
 
             CreateButton();
+            coins.InitializationCoins();
 
             KeyDown += new KeyEventHandler(KeyBoard);
             KeyUp += new KeyEventHandler(FreeKey);
@@ -69,7 +70,7 @@ namespace TheLostHero
             exitButton.Click += new EventHandler(ExitGame);
             exitButton.FlatAppearance.BorderSize = 0;
             exitButton.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            exitButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            exitButton.FlatAppearance.MouseOverBackColor = Color.Transparent; 
         }
 
         private void ExitGame(object sender, EventArgs e)
@@ -168,7 +169,7 @@ namespace TheLostHero
             if (isStartGame)
             {
                 map.PresentationMap(grPaint);
-                coin.PresentationImageCoin(grPaint);
+                coins.PresentationImageCoin(grPaint);
                 bot.PlayAnimation(grPaint);
                 player.PlayAnimation(grPaint, isPressedAnyKey);
                 player.PresentationCountCoins(grPaint);
