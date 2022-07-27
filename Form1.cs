@@ -90,8 +90,7 @@ namespace TheLostHero
         {
             if (isStartGame)
             {
-                if (player.currFrame == 3) player.currFrame = 0;
-                player.currFrame++;
+                player.UpdateCurrFrame(player);
                 bots.Move();
                 Invalidate(); // Переотрисовка
             }
@@ -118,44 +117,15 @@ namespace TheLostHero
 
         private void UpdateMove(object sender, EventArgs e)
         {
-            switch (player.currAnimation)
-            {
-                case 0:
-                    player.Down(Height, sizeOfMapObject, Map.Height);
-                    break;
-                case 1:
-                    player.Up(Height, sizeOfMapObject, Map.Height);
-                    break;
-                case 2:
-                    player.Left(Width, sizeOfMapObject, Map.Width);
-                    break;
-                case 3:
-                    player.Right(Width, sizeOfMapObject, Map.Width);
-                    break;
-            }
+            player.UpdatePosition(player, sizeOfMapObject, Height, Width);
             Invalidate(); // Переотрисовка
         }
 
         private void CheckStopOrMove(KeyEventArgs e)
         {
+            player.ChoosingAction(player, e.KeyCode.ToString(), isPressedAnyKey);
             switch (e.KeyCode.ToString())
             {
-                case "S":
-                    if (isPressedAnyKey) player.currAnimation = 0;
-                    else player.currAnimation = 4;
-                    break;
-                case "W":
-                    if (isPressedAnyKey) player.currAnimation = 1;
-                    else player.currAnimation = 5;
-                    break;
-                case "A":
-                    if (isPressedAnyKey) player.currAnimation = 2;
-                    else player.currAnimation = 6;
-                    break;
-                case "D":
-                    if (isPressedAnyKey) player.currAnimation = 3;
-                    else player.currAnimation = 7;
-                    break;
                 case "F":
                     map.ChangeMap();
                     Invalidate();

@@ -26,6 +26,54 @@ namespace TheLostHero
             delta = new Point(0, 0);
         }
 
+        public void UpdateCurrFrame(Player player)
+        {
+            if (player.currFrame == 3) player.currFrame = 0;
+            player.currFrame++;
+        }
+
+        public void UpdatePosition(Player player, int sizeOfMapObject, int Height, int Width)
+        {
+            switch (player.currAnimation)
+            {
+                case 0:
+                    player.Down(Height, sizeOfMapObject, Map.Height);
+                    break;
+                case 1:
+                    player.Up(Height, sizeOfMapObject, Map.Height);
+                    break;
+                case 2:
+                    player.Left(Width, sizeOfMapObject, Map.Width);
+                    break;
+                case 3:
+                    player.Right(Width, sizeOfMapObject, Map.Width);
+                    break;
+            }
+        }
+
+        public void ChoosingAction(Player player,string buttonpressed, bool isPressedAnyKey)
+        {
+            switch (buttonpressed)
+            {
+                case "S":
+                    if (isPressedAnyKey) player.currAnimation = 0;
+                    else player.currAnimation = 4;
+                    break;
+                case "W":
+                    if (isPressedAnyKey) player.currAnimation = 1;
+                    else player.currAnimation = 5;
+                    break;
+                case "A":
+                    if (isPressedAnyKey) player.currAnimation = 2;
+                    else player.currAnimation = 6;
+                    break;
+                case "D":
+                    if (isPressedAnyKey) player.currAnimation = 3;
+                    else player.currAnimation = 7;
+                    break;
+            }
+        }
+
         public void PresentationCountCoins(Graphics gr)
         {
             gr.DrawString(CountCoins.ToString(), font, brush, new Point(10, 10));
